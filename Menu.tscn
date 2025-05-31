@@ -1,0 +1,320 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://Water_View_Shader.gdshader" type="Shader" id=1]
+[ext_resource path="res://Roboto.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://SirinStencil.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Menu.gd" type="Script" id=5]
+[ext_resource path="res://WaterText.png" type="Texture" id=6]
+[ext_resource path="res://SlimeText.png" type="Texture" id=7]
+[ext_resource path="res://HoneyText.png" type="Texture" id=8]
+[ext_resource path="res://DetectMouseEnter.gd" type="Script" id=9]
+[ext_resource path="res://ButtonPress.gd" type="Script" id=10]
+[ext_resource path="res://ButtonPressSwitch.gd" type="Script" id=11]
+[ext_resource path="res://FluidSim.png" type="Texture" id=12]
+[ext_resource path="res://JarSim.png" type="Texture" id=13]
+
+[sub_resource type="OpenSimplexNoise" id=6]
+octaves = 4
+period = 58.5
+persistence = 0.919
+lacunarity = 2.8
+
+[sub_resource type="NoiseTexture" id=7]
+seamless = true
+noise = SubResource( 6 )
+
+[sub_resource type="ShaderMaterial" id=8]
+shader = ExtResource( 1 )
+shader_param/water_speed = 0.01
+shader_param/color_detect_threshold = 0.35
+shader_param/water_dev_color = Color( 1, 0, 1, 1 )
+shader_param/water_color = Color( 0, 0.462745, 1, 1 )
+shader_param/bubble_color = Color( 0.223529, 0, 0.545098, 1 )
+shader_param/noise = SubResource( 7 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 32, 31.5 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 42
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 24
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=5]
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[node name="Main Menu" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="Background" type="ColorRect" parent="."]
+margin_right = 640.0
+margin_bottom = 640.0
+mouse_filter = 2
+color = Color( 1, 0, 1, 1 )
+
+[node name="Shader" type="Sprite" parent="."]
+material = SubResource( 8 )
+scale = Vector2( 10, 10 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="TitleRect" type="ColorRect" parent="."]
+margin_top = 51.0
+margin_right = 640.0
+margin_bottom = 180.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.494118 )
+
+[node name="FluidRect" type="ColorRect" parent="."]
+margin_left = 49.0
+margin_top = 400.0
+margin_right = 341.0
+margin_bottom = 591.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.494118 )
+
+[node name="SimRect" type="ColorRect" parent="."]
+margin_left = 392.0
+margin_top = 400.0
+margin_right = 590.0
+margin_bottom = 591.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 0.494118 )
+
+[node name="WaterButton" type="ColorRect" parent="."]
+margin_left = 75.0
+margin_top = 479.0
+margin_right = 139.0
+margin_bottom = 543.0
+mouse_filter = 2
+color = Color( 0.0588235, 0.858824, 1, 0.501961 )
+script = ExtResource( 10 )
+value = "water"
+
+[node name="Area2D" type="Area2D" parent="WaterButton"]
+script = ExtResource( 9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WaterButton/Area2D"]
+position = Vector2( 32, 31.5 )
+shape = SubResource( 10 )
+
+[node name="SlimeButton" type="ColorRect" parent="."]
+margin_left = 163.0
+margin_top = 479.0
+margin_right = 227.0
+margin_bottom = 543.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0.188235 )
+script = ExtResource( 10 )
+value = "slime"
+
+[node name="Area2D" type="Area2D" parent="SlimeButton"]
+script = ExtResource( 9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlimeButton/Area2D"]
+position = Vector2( 32, 31.5 )
+shape = SubResource( 10 )
+
+[node name="HoneyButton" type="ColorRect" parent="."]
+margin_left = 252.0
+margin_top = 479.0
+margin_right = 316.0
+margin_bottom = 543.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0.188235 )
+script = ExtResource( 10 )
+value = "honey"
+
+[node name="Area2D" type="Area2D" parent="HoneyButton"]
+script = ExtResource( 9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HoneyButton/Area2D"]
+position = Vector2( 32, 31.5 )
+shape = SubResource( 10 )
+
+[node name="FlowButton" type="ColorRect" parent="."]
+margin_left = 416.0
+margin_top = 479.0
+margin_right = 480.0
+margin_bottom = 543.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0.188235 )
+script = ExtResource( 11 )
+path = "res://FluidSim2D/WaterSim.tscn"
+
+[node name="Area2D" type="Area2D" parent="FlowButton"]
+script = ExtResource( 9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FlowButton/Area2D"]
+position = Vector2( 32, 31.5 )
+shape = SubResource( 10 )
+
+[node name="JarButton" type="ColorRect" parent="."]
+margin_left = 502.0
+margin_top = 479.0
+margin_right = 566.0
+margin_bottom = 543.0
+mouse_filter = 2
+color = Color( 1, 1, 1, 0.188235 )
+script = ExtResource( 11 )
+path = "res://FluidSim2D/ContainerSim.tscn"
+
+[node name="Area2D" type="Area2D" parent="JarButton"]
+script = ExtResource( 9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JarButton/Area2D"]
+position = Vector2( 32, 31.5 )
+shape = SubResource( 10 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 120.0
+margin_top = 91.0
+margin_right = 520.0
+margin_bottom = 177.0
+grow_horizontal = 0
+custom_fonts/font = SubResource( 4 )
+text = "Simulacion de Fluidos"
+align = 1
+valign = 1
+
+[node name="Label" type="Label" parent="Label"]
+margin_left = -1.0
+margin_top = -47.0
+margin_right = 399.0
+margin_bottom = 39.0
+grow_horizontal = 0
+custom_fonts/font = SubResource( 9 )
+text = "Graficos por Computadora"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 190.0
+margin_top = 230.0
+margin_right = 450.0
+margin_bottom = 350.0
+custom_fonts/font = SubResource( 5 )
+text = "María Guadalupe Prieto Pantoja
+Martin Daniel López Gutiérrez
+Josué Valenzuela Pérez"
+align = 1
+valign = 1
+
+[node name="Label3" type="Label" parent="."]
+margin_left = 49.0
+margin_top = 417.0
+margin_right = 341.0
+margin_bottom = 463.0
+custom_fonts/font = SubResource( 5 )
+text = "Seleccione Fluido"
+align = 1
+valign = 1
+
+[node name="Label5" type="Label" parent="."]
+margin_left = 75.0
+margin_top = 543.0
+margin_right = 139.0
+margin_bottom = 589.0
+custom_fonts/font = SubResource( 5 )
+text = "Agua"
+align = 1
+valign = 1
+
+[node name="Label7" type="Label" parent="."]
+margin_left = 252.0
+margin_top = 543.0
+margin_right = 316.0
+margin_bottom = 589.0
+custom_fonts/font = SubResource( 5 )
+text = "Miel"
+align = 1
+valign = 1
+
+[node name="Label6" type="Label" parent="."]
+margin_left = 163.0
+margin_top = 543.0
+margin_right = 227.0
+margin_bottom = 589.0
+custom_fonts/font = SubResource( 5 )
+text = "Slime"
+align = 1
+valign = 1
+
+[node name="Label8" type="Label" parent="."]
+margin_left = 416.0
+margin_top = 543.0
+margin_right = 480.0
+margin_bottom = 589.0
+custom_fonts/font = SubResource( 5 )
+text = "Fluido"
+align = 1
+valign = 1
+
+[node name="Label9" type="Label" parent="."]
+margin_left = 502.0
+margin_top = 543.0
+margin_right = 566.0
+margin_bottom = 589.0
+custom_fonts/font = SubResource( 5 )
+text = "Jarra"
+align = 1
+valign = 1
+
+[node name="Label4" type="Label" parent="."]
+margin_left = 392.0
+margin_top = 417.0
+margin_right = 590.0
+margin_bottom = 463.0
+custom_fonts/font = SubResource( 5 )
+text = "Entorno"
+align = 1
+valign = 1
+
+[node name="Water" type="Sprite" parent="."]
+position = Vector2( 85, 489 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="Water3" type="Sprite" parent="."]
+position = Vector2( 262, 489 )
+texture = ExtResource( 8 )
+centered = false
+
+[node name="Water2" type="Sprite" parent="."]
+position = Vector2( 173, 489 )
+texture = ExtResource( 7 )
+centered = false
+
+[node name="Water4" type="Sprite" parent="."]
+position = Vector2( 426, 489 )
+texture = ExtResource( 12 )
+centered = false
+
+[node name="Water5" type="Sprite" parent="."]
+position = Vector2( 512, 489 )
+texture = ExtResource( 13 )
+centered = false
+
+[connection signal="selected" from="WaterButton" to="SlimeButton" method="_on_WaterButton_selected"]
+[connection signal="selected" from="WaterButton" to="HoneyButton" method="_on_WaterButton_selected"]
+[connection signal="mouse_entered" from="WaterButton/Area2D" to="WaterButton/Area2D" method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="WaterButton/Area2D" to="WaterButton/Area2D" method="_on_Area2D_mouse_exited"]
+[connection signal="selected" from="SlimeButton" to="WaterButton" method="_on_SlimeButton_selected"]
+[connection signal="selected" from="SlimeButton" to="HoneyButton" method="_on_SlimeButton_selected"]
+[connection signal="mouse_entered" from="SlimeButton/Area2D" to="SlimeButton/Area2D" method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="SlimeButton/Area2D" to="SlimeButton/Area2D" method="_on_Area2D_mouse_exited"]
+[connection signal="selected" from="HoneyButton" to="WaterButton" method="_on_HoneyButton_selected"]
+[connection signal="selected" from="HoneyButton" to="SlimeButton" method="_on_HoneyButton_selected"]
+[connection signal="mouse_entered" from="HoneyButton/Area2D" to="HoneyButton/Area2D" method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="HoneyButton/Area2D" to="HoneyButton/Area2D" method="_on_Area2D_mouse_exited"]
+[connection signal="mouse_entered" from="FlowButton/Area2D" to="FlowButton/Area2D" method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="FlowButton/Area2D" to="FlowButton/Area2D" method="_on_Area2D_mouse_exited"]
+[connection signal="mouse_entered" from="JarButton/Area2D" to="JarButton/Area2D" method="_on_Area2D_mouse_entered"]
+[connection signal="mouse_exited" from="JarButton/Area2D" to="JarButton/Area2D" method="_on_Area2D_mouse_exited"]
